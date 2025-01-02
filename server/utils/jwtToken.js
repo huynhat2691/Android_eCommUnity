@@ -59,9 +59,9 @@ const sendToken = (user, statusCode, res) => {
       expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
       httpOnly: true,
       sameSite: "none",
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       path: "/",
-      domain: "https://android-e-comm-unity-server.vercel.app",
+      domain: "android-e-comm-unity-server.vercel.app",
     };
 
     res.status(statusCode).cookie("token", token, options).json({

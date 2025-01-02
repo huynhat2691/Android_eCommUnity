@@ -24,6 +24,7 @@ app.use(
       "http://192.168.226.1:5173",
       "http://192.168.1.4:5000",
       "https://ecommunity-frontend.loca.lt",
+      "https://android-e-comm-unity-client.vercel.app/"
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Thêm OPTIONS

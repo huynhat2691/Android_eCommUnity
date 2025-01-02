@@ -60,6 +60,8 @@ const sendToken = (user, statusCode, res) => {
       httpOnly: true,
       sameSite: "none",
       secure: true,
+      path: "/",
+      domain: "https://android-e-comm-unity-server.vercel.app",
     };
 
     res.status(statusCode).cookie("token", token, options).json({

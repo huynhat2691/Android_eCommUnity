@@ -422,7 +422,7 @@ const ShopInfo = ({ isOwner }) => {
                 )}
               </div>
               
-              {isOwner === false && data.name !== "eCommUnity" && (
+              {/* {isOwner === false && data.name !== "eCommUnity" && (
                 <div className="mt-4 md:mt-0 md:ml-4">
                   <Button
                     variant="outline"
@@ -433,7 +433,7 @@ const ShopInfo = ({ isOwner }) => {
                     Chat
                   </Button>
                 </div>
-              )}
+              )} */}
             </div>
 
             {/* Shop Details Section */}

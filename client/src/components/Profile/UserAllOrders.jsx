@@ -42,19 +42,19 @@ const UserAllOrders = () => {
     // Lọc theo trạng thái
     if (status !== "all") {
       if (status === "Refund") {
-        filtered = filtered.filter(
+        filtered = filtered?.filter(
           (order) =>
             order.status === "Processing Refund" ||
             order.status === "Refund Success"
         );
       } else {
-        filtered = filtered.filter((order) => order.status === status);
+        filtered = filtered?.filter((order) => order.status === status);
       }
     }
 
     // Tìm kiếm
     if (searchTerm) {
-      filtered = filtered.filter((order) =>
+      filtered = filtered?.filter((order) =>
         order.cart.some(
           (item) =>
             item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||

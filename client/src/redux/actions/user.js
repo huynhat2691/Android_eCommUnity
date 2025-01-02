@@ -168,7 +168,7 @@ export const logoutUser = () => async (dispatch) => {
   try {
     await axios.get(`${server}/user/logout`, { withCredentials: true });
     dispatch({ type: "userLogoutSuccess" });
-    // dispatch(loadUser()); // This will reset the user state
+    dispatch(loadUser()); // This will reset the user state
   } catch (error) {
     dispatch({
       type: "userLogoutFail",

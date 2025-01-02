@@ -53,6 +53,8 @@ app.get("/api-endpoint", (req, res) => {
 app.use("/test", (req, res) => {
   res.send("Hello world!");
 });
+
+app.get("/api/test", (req, res) => res.send("Server is working!"));
 // app.use(express.static("uploads"));
 
 // import routes

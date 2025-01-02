@@ -9,7 +9,7 @@ const fs = require("fs");
 
 // config
 if (process.env.NODE_ENV !== "PRODUCTION") {
-  require("dotenv").config({ path: "server/config/.env" });
+  require("dotenv").config({ path: "config/.env" });
 }
 
 app.use(
@@ -50,11 +50,9 @@ app.get("/api-endpoint", (req, res) => {
   res.json({ message: "API is working!" });
 });
 
-app.use("/test", (req, res) => {
+app.use("/", (req, res) => {
   res.send("Hello world!");
 });
-
-app.get("/api/test", (req, res) => res.send("Server is working!"));
 // app.use(express.static("uploads"));
 
 // import routes

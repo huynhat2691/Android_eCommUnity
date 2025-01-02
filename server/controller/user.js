@@ -154,6 +154,8 @@ router.get(
       res.cookie("token", null, {
         expires: new Date(Date.now()),
         httpOnly: true,
+        sameSite: "strict",
+        secure: true,
       });
       res.status(201).json({
         success: true,

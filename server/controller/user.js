@@ -147,6 +147,23 @@ router.get(
 );
 
 // logout user
+// router.get(
+//   "/logout",
+//   catchAsyncErrors(async (req, res, next) => {
+//     try {
+//       res.cookie("token", null, {
+//         expires: new Date(Date.now()),
+//         httpOnly: true,
+//       });
+//       res.status(201).json({
+//         success: true,
+//         message: "Đăng xuất thành công",
+//       });
+//     } catch (error) {
+//       return next(new ErrorHandler(error.message, 500));
+//     }
+//   })
+// );
 router.get(
   "/logout",
   catchAsyncErrors(async (req, res, next) => {
@@ -154,8 +171,10 @@ router.get(
       res.cookie("token", null, {
         expires: new Date(Date.now()),
         httpOnly: true,
-        sameSite: "strict",
+        sameSite: "none", // Thay đổi từ strict sang none
         secure: true,
+        path: "/",
+        domain: "android-e-comm-unity-server.vercel.app" // Thêm domain
       });
       res.status(201).json({
         success: true,

@@ -9,7 +9,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server/index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "[my-framework] build --output public"
   },
   "author": "huynhat2691",
   "license": "ISC",

@@ -1,0 +1,163 @@
+/* eslint-disable react/prop-types */
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  BookUser,
+  FilePen,
+  // House,
+  Lock,
+  LogOut,
+  // MessageSquare,
+  Shield,
+  ShoppingBag,
+  Store,
+  UserRound,
+} from "lucide-react";
+import { logoutUser } from "../../redux/actions/user";
+import { toast } from "react-toastify";
+
+const ProfileSidebar = ({ active, setActive }) => {
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.user);
+  const { isSellerAuthenticated } = useSelector((state) => state.seller);
+  const dispatch = useDispatch();
+
+  // const logoutHandler = () => {
+  //   toast.success("Đăng xuất thành công");
+  //   dispatch(logoutUser());
+  //   navigate("/login"); // Redirect to login page after logout
+  // };
+
+  const logoutHandler = async () => {
+    try {
+      toast.success("Đăng xuất thành công");
+      await dispatch(logoutUser());
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
+
+  return (
+    <div className="w-full bg-white shadow-sm flex flex-col justify-around font-[500] ">
+      <Link
+        to="/profile/account"
+        className={`${
+          active === 1 ? "text-[red] p-6 px-8 rounded-t-xl" : "p-6 px-8 "
+        } flex items-center cursor-pointer w-full`}
+        onClick={() => setActive(1)}
+      >
+        <UserRound size={22} className="mr-3" />
+        <span>Thông tin tài khoản</span>
+      </Link>
+
+      <Link
+        to="/profile/orders"
+        className={`${
+          active === 2 ? "text-[red] p-6 px-8 rounded-xl" : "p-6 px-8"
+        } flex items-center cursor-pointer w-full`}
+        onClick={() => setActive(2)}
+      >
+        <ShoppingBag size={22} className="mr-3" />
+        <span>Quản lý đơn hàng</span>
+      </Link>
+
+      {/* <Link to="/profile/refunds"
+        className={`${
+          active === 3 ? "text-[red] p-6 px-8 rounded-xl" : "p-6 px-8"
+        } flex items-center cursor-pointer w-full`}
+        onClick={() => setActive(3)}
+      >
+        <Undo2 size={22} className="mr-3" />
+        <span>Quản lý đổi trả</span>
+      </Link> */}
+
+      {/* <Link
+        to="/profile/inbox"
+        className={`${
+          active === 4 ? "text-[red] p-6 px-8 rounded-xl" : "p-6 px-8"
+        } flex items-center cursor-pointer w-full`}
+        onClick={() => setActive(4)}
+      >
+        <MessageSquare size={22} className="mr-3" />
+        <span>Quản lý tin nhắn</span>
+      </Link> */}
+
+      <Link
+        to="/profile/change-password"
+        className={`${
+          active === 6 ? "text-[red] p-6 px-8 rounded-xl" : "p-6 px-8"
+        } flex items-center cursor-pointer w-full`}
+        onClick={() => setActive(6)}
+      >
+        <Lock size={22} className="mr-3" />
+        <span>Đổi mật khẩu</span>
+      </Link>
+
+      <Link
+        to="/profile/addresses"
+        className={`${
+          active === 7 ? "text-[red] p-6 px-8 rounded-xl" : "p-6 px-8"
+        } flex items-center cursor-pointer w-full`}
+        onClick={() => setActive(7)}
+      >
+        <BookUser size={22} className="mr-3" />
+        <span>Sổ địa chỉ</span>
+      </Link>
+
+      {user && user?.role === "Admin" && (
+        <Link to="/admin/dashboard">
+          <div
+            className={`${
+              active === 8 ? "text-[red] p-6 px-8 rounded-xl" : "p-6 px-8"
+            } flex items-center cursor-pointer w-full`}
+            onClick={() => setActive(8)}
+          >
+            <Shield size={22} className="mr-3" />
+            <span>Admin Dashboard</span>
+          </div>
+        </Link>
+      )}
+
+      <div>
+        {isSellerAuthenticated && (
+          <div className="flex items-center p-6 px-8 rounded-xl">
+            <div>
+              <Link to="/dashboard" className="flex items-center">
+                <Store size={22} className="mr-3" />
+                <h1 className="flex items-center pl-1">Kênh người bán</h1>
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {!isSellerAuthenticated && (
+          <div className="flex items-center p-6 px-8 rounded-xl">
+            <FilePen size={22} className="mr-3" />
+            <div>
+              <div className="">
+                <Link to="/shop-create">
+                  <h1 className="flex items-center">
+                    Bán hàng cùng Ecommunity
+                  </h1>
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div
+        className={`${
+          active === 8 ? "text-[red] p-6 px-8 rounded-xl" : "p-6 px-8"
+        } flex items-center cursor-pointer w-full`}
+        onClick={logoutHandler}
+      >
+        <LogOut size={22} className="mr-3" />
+        <span>Đăng xuất</span>
+      </div>
+    </div>
+  );
+};
+
+export default ProfileSidebar;

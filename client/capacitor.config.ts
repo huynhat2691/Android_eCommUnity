@@ -31,7 +31,7 @@ const config: CapacitorConfig = {
   appName: "eCommUnity",
   webDir: "dist",
   server: {
-    url: "http://192.168.1.4:5173",
+    url: "https://android-e-comm-unity-client.vercel.app",
     cleartext: true,
     androidScheme: "http",
   },

@@ -28,7 +28,7 @@ import {
 } from "../ui/dropdown-menu";
 import { toast } from "react-toastify";
 
-const ENDPOINT = "http://localhost:5001/";
+const ENDPOINT = "https://android-ecommunity-socketio.onrender.com/";
 let socket;
 
 const DashboardMessages = () => {

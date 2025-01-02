@@ -15,7 +15,7 @@ import { Button } from "../ui/button";
 import { CardHeader, CardTitle } from "../ui/card";
 import { ScrollArea } from "../ui/scroll-area";
 
-const ENDPOINT = "http://localhost:5001/";
+const ENDPOINT = "https://android-ecommunity-socketio.onrender.com/";
 
 let socket;
 

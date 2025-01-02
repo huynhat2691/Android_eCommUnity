@@ -262,6 +262,7 @@ import { Skeleton } from "../ui/skeleton";
 import { MapPin, MessageSquare, Star, Store, UserCheck } from "lucide-react";
 import { toast } from "react-toastify";
 import { logoutSeller } from "../../redux/actions/seller";
+import { setCurrentConversation, toggleChatPopup } from "../../redux/actions/chatActions";
 
 const ShopInfo = ({ isOwner }) => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -324,10 +325,12 @@ const ShopInfo = ({ isOwner }) => {
         );
 
         let conversationId;
+        let conversation;
 
         if (checkResponse.data.exists) {
           // If conversation exists, use its ID
           conversationId = checkResponse.data.conversation._id;
+          conversation = checkResponse.data.conversation;
         } else {
           // If conversation doesn't exist, create a new one
           const createResponse = await axios.post(
@@ -338,10 +341,12 @@ const ShopInfo = ({ isOwner }) => {
             }
           );
           conversationId = createResponse.data.conversation._id;
+          conversation = createResponse.data.conversation;
         }
 
-        // Navigate to the conversation
-        navigate(`/profile/inbox?conversationId=${conversationId}`);
+        // Dispatch actions to show chat popup and set current conversation
+        dispatch(toggleChatPopup());
+        dispatch(setCurrentConversation(conversation));
       } catch (err) {
         toast.error(
           err.response?.data?.message ||

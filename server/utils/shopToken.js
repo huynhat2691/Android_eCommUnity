@@ -30,7 +30,7 @@ const sendShopToken = (seller, statusCode, res) => {
       expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
       httpOnly: true,
       sameSite: "none",
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       path: "/",
       domain: "https://android-e-comm-unity-server.vercel.app",
     };

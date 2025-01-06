@@ -250,6 +250,44 @@ router.put(
 //     }
 //   })
 // );
+// router.put(
+//   "/update-user-avatar",
+//   isAuthenticated,
+//   catchAsyncErrors(async (req, res, next) => {
+//     try {
+//       const { image } = req.body;
+
+//       if (!image) {
+//         return next(new ErrorHandler("Không tìm thấy ảnh", 400));
+//       }
+
+//       // Kiểm tra xem chuỗi có phải là base64 hợp lệ không
+//       if (!image.match(/^data:image\/(png|jpg|jpeg);base64,/)) {
+//         return next(new ErrorHandler("Định dạng ảnh không hợp lệ", 400));
+//       }
+
+//       // Giới hạn kích thước ảnh (ví dụ: 5MB)
+//       const sizeInBytes = Buffer.from(image.split(',')[1], 'base64').length;
+//       if (sizeInBytes > 5 * 1024 * 1024) {
+//         return next(new ErrorHandler("Kích thước ảnh quá lớn (tối đa 5MB)", 400));
+//       }
+
+//       const user = await User.findByIdAndUpdate(
+//         req.user._id,
+//         { avatar: image },
+//         { new: true, runValidators: true }
+//       );
+
+//       res.status(200).json({
+//         success: true,
+//         user,
+//       });
+//     } catch (error) {
+//       console.error("Error in update avatar:", error);
+//       return next(new ErrorHandler(error.message, 500));
+//     }
+//   })
+// );
 router.put(
   "/update-user-avatar",
   isAuthenticated,
@@ -261,22 +299,33 @@ router.put(
         return next(new ErrorHandler("Không tìm thấy ảnh", 400));
       }
 
-      // Kiểm tra xem chuỗi có phải là base64 hợp lệ không
+      // Kiểm tra định dạng base64
       if (!image.match(/^data:image\/(png|jpg|jpeg);base64,/)) {
         return next(new ErrorHandler("Định dạng ảnh không hợp lệ", 400));
       }
 
-      // Giới hạn kích thước ảnh (ví dụ: 5MB)
-      const sizeInBytes = Buffer.from(image.split(',')[1], 'base64').length;
-      if (sizeInBytes > 5 * 1024 * 1024) {
+      // Tách phần header và data của base64
+      const base64Data = image.split(';base64,').pop();
+
+      // Kiểm tra kích thước
+      const sizeInBytes = Buffer.from(base64Data, 'base64').length;
+      const maxSize = 5 * 1024 * 1024; // 5MB
+
+      if (sizeInBytes > maxSize) {
         return next(new ErrorHandler("Kích thước ảnh quá lớn (tối đa 5MB)", 400));
       }
 
-      const user = await User.findByIdAndUpdate(
-        req.user._id,
-        { avatar: image },
-        { new: true, runValidators: true }
-      );
+      // Tối ưu ảnh trước khi lưu (nếu cần)
+      // Có thể thêm logic nén ảnh ở đây
+
+      const user = await User.findById(req.user._id);
+      if (!user) {
+        return next(new ErrorHandler("Không tìm thấy người dùng", 404));
+      }
+
+      // Cập nhật avatar
+      user.avatar = image;
+      await user.save();
 
       res.status(200).json({
         success: true,

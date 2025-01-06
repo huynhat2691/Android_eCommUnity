@@ -7,8 +7,11 @@ export const loadUser = () => async (dispatch) => {
     dispatch({
       type: "LoadUserRequest",
     });
-    const { data } = await axios.get(`${server}/user/getuser`, {
+    const { data } = await axios.get(`${server}/user/getUser`, {
       withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
     dispatch({
       type: "LoadUserSuccess",
@@ -17,7 +20,7 @@ export const loadUser = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "LoadUserFail",
-      payload: error.response?.data.message,
+      payload: error.response.data.message,
     });
   }
 };
@@ -38,46 +41,89 @@ export const loadSeller = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "LoadSellerFail",
-      payload: error.response?.data.message,
+      payload: error.response.data.message,
     });
   }
 };
 
 // update user information
-export const updateUserInfo =
-  (email, password, phoneNumber, name) => async (dispatch) => {
-    try {
-      dispatch({
-        type: "updateUserInfoRequest",
-      });
+// export const updateUserInfo = (email, password, phoneNumber, name) => async (dispatch) => {
+//   try {
+//     dispatch({
+//       type: "updateUserInfoRequest",
+//     });
 
-      const { data } = await axios.put(
-        `${server}/user/update-user-info`,
-        {
-          email,
-          password,
-          phoneNumber,
-          name,
-        },
-        {
-          withCredentials: true,
-          headers: {
-            "Access-Control-Allow-Credentials": true,
-          },
-        }
-      );
+//     const config = {
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       withCredentials: true
+//     };
 
-      dispatch({
-        type: "updateUserInfoSuccess",
-        payload: data.user,
-      });
-    } catch (error) {
-      dispatch({
-        type: "updateUserInfoFail",
-        payload: error.response?.data.message,
-      });
-    }
-  };
+//     const { data } = await axios.put(
+//       `${server}/user/update-user-info`,
+//       {
+//         email,
+//         password,
+//         phoneNumber,
+//         name,
+//       },
+//       config
+//     );
+
+//     dispatch({
+//       type: "updateUserInfoSuccess",
+//       payload: data.user,
+//     });
+//   } catch (error) {
+//     dispatch({
+//       type: "updateUserInfoFail",
+//       payload: error.response?.data?.message || "Có lỗi xảy ra",
+//     });
+//   }
+// };
+export const updateUserInfo = (email, password, phoneNumber, name) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "updateUserInfoRequest",
+    });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true
+    };
+
+    const { data } = await axios.put(
+      `${server}/user/update-user-info`,
+      {
+        email,
+        password,
+        phoneNumber,
+        name,
+      },
+      config
+    );
+
+    dispatch({
+      type: "updateUserInfoSuccess",
+      payload: data.user,
+    });
+
+    // Thêm message vào payload
+    dispatch({
+      type: "updateUserMessage",
+      payload: data.message,
+    });
+
+  } catch (error) {
+    dispatch({
+      type: "updateUserInfoFail",
+      payload: error.response?.data?.message || "Có lỗi xảy ra",
+    });
+  }
+};
 
 export const updateUserAddress = (addressData) => async (dispatch) => {
   try {
@@ -85,28 +131,33 @@ export const updateUserAddress = (addressData) => async (dispatch) => {
       type: "updateUserAddressRequest",
     });
 
-    const { data } = await axios.put(
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true
+    };
+
+    const response = await axios.put(
       `${server}/user/update-user-addresses`,
       addressData,
-      {
-        withCredentials: true,
-        headers: {
-          "Access-Control-Allow-Credentials": true,
-        },
-      }
+      config  
     );
 
-    dispatch({
-      type: "updateUserAddressSuccess",
-      payload: {
-        user: data.user,
-        successMessage: data.message, // Assuming your API returns a success message
-      },
-    });
+    // Kiểm tra response trước khi dispatch
+    if (response && response.data) {
+      dispatch({
+        type: "updateUserAddressSuccess", 
+        payload: {
+          user: response.data.user,
+          successMessage: "Địa chỉ đã được thêm thành công"
+        },
+      });
+    }
   } catch (error) {
     dispatch({
       type: "updateUserAddressFail",
-      payload: error.response?.data.message,
+      payload: error.response?.data?.message || "Có lỗi xảy ra"
     });
   }
 };
@@ -137,7 +188,7 @@ export const deleteUserAddress = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "deleteUserAddressFail",
-      payload: error.response?.data.message,
+      payload: error.response.data.message,
     });
   }
 };
@@ -159,7 +210,7 @@ export const getAllUsersAdmin = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "getAllUsersAdminFail",
-      payload: error.response?.data.message,
+      payload: error.response.data.message,
     });
   }
 };
@@ -172,7 +223,7 @@ export const logoutUser = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "userLogoutFail",
-      payload: error.response?.data.message,
+      payload: error.response.data.message,
     });
   }
 };

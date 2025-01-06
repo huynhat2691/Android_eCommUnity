@@ -30,19 +30,23 @@ const UserPreviewAndUpdateProfile = () => {
 
   useEffect(() => {
     if (error) {
+      toast.error(error); // Hiển thị lỗi
       dispatch({ type: "clearErrors" });
     }
-
     if (successMessage) {
       toast.success(successMessage);
-      dispatch({ type: "clearMessage" });
+      dispatch({ type: "clearMessages" });
     }
-  }, [error, dispatch, successMessage]);
+  }, [error, successMessage, dispatch]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(updateUserInfo(email, password, phoneNumber, name));
-    toast.success("Thông tin tài khoản cập nhật thành công");
+    try {
+      await dispatch(updateUserInfo(email, password, phoneNumber, name)).unwrap();
+      // Toast sẽ được hiển thị thông qua successMessage trong useEffect
+    } catch (error) {
+      // Lỗi sẽ được hiển thị thông qua error trong useEffect
+    }
   };
 
   const handleImage = async (e) => {
@@ -145,7 +149,6 @@ const UserPreviewAndUpdateProfile = () => {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="!bg-white !border-[#27b3e2]"
-                    
                   />
                 </div>
 
@@ -161,8 +164,6 @@ const UserPreviewAndUpdateProfile = () => {
                     value={maskedEmail}
                     onChange={(e) => setEmail(e.target.value)}
                     className="!bg-white !border-[#27b3e2]"
-
-                    
                   />
                 </div>
 
@@ -181,7 +182,6 @@ const UserPreviewAndUpdateProfile = () => {
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
                     className="!bg-white !border-[#27b3e2]"
-
                   />
                 </div>
 
@@ -198,11 +198,12 @@ const UserPreviewAndUpdateProfile = () => {
                     min={1}
                     onChange={(e) => setPassword(e.target.value)}
                     className="!bg-white !border-[#27b3e2]"
-
                   />
                 </div>
 
-                <Button className="w-full mt-3 flex max-w-sm !bg-[#27b3e2] !text-white">Cập nhật</Button>
+                <Button className="w-full mt-3 flex max-w-sm !bg-[#27b3e2] !text-white">
+                  Cập nhật
+                </Button>
               </div>
             </form>
           </div>

@@ -17,7 +17,7 @@ export const loadUser = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "LoadUserFail",
-      payload: error.response.data.message,
+      payload: error.response?.data.message,
     });
   }
 };
@@ -38,7 +38,7 @@ export const loadSeller = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "LoadSellerFail",
-      payload: error.response.data.message,
+      payload: error.response?.data.message,
     });
   }
 };
@@ -74,7 +74,7 @@ export const updateUserInfo =
     } catch (error) {
       dispatch({
         type: "updateUserInfoFail",
-        payload: error.response.data.message,
+        payload: error.response?.data.message,
       });
     }
   };
@@ -106,7 +106,7 @@ export const updateUserAddress = (addressData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "updateUserAddressFail",
-      payload: error.response.data.message,
+      payload: error.response?.data.message,
     });
   }
 };
@@ -137,7 +137,7 @@ export const deleteUserAddress = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "deleteUserAddressFail",
-      payload: error.response.data.message,
+      payload: error.response?.data.message,
     });
   }
 };
@@ -159,7 +159,7 @@ export const getAllUsersAdmin = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "getAllUsersAdminFail",
-      payload: error.response.data.message,
+      payload: error.response?.data.message,
     });
   }
 };
@@ -172,7 +172,7 @@ export const logoutUser = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "userLogoutFail",
-      payload: error.response.data.message,
+      payload: error.response?.data.message,
     });
   }
 };

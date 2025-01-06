@@ -187,6 +187,40 @@ router.get(
 );
 
 // update user information
+// router.put(
+//   "/update-user-info",
+//   isAuthenticated,
+//   catchAsyncErrors(async (req, res, next) => {
+//     try {
+//       const { email, password, phoneNumber, name } = req.body;
+//       const user = await User.findOne({ email }).select("+password");
+
+//       if (!user) {
+//         return next(new ErrorHandler("Email hoặc mật khẩu không hợp lệ", 400));
+//       }
+
+//       const isPasswordMatched = await user.comparePassword(password);
+
+//       if (!isPasswordMatched) {
+//         return next(new ErrorHandler("Email hoặc mật khẩu không hợp lệ", 401));
+//       }
+
+//       user.name = name;
+//       user.email = email;
+//       user.phoneNumber = phoneNumber;
+
+//       await user.save();
+
+//       res.status(201).json({
+//         success: true,
+//         message: "Cập nhật thông tin thành công",
+//         user,
+//       });
+//     } catch (error) {
+//       return next(new ErrorHandler(error.message, 500));
+//     }
+//   })
+// );
 router.put(
   "/update-user-info",
   isAuthenticated,
@@ -209,12 +243,16 @@ router.put(
       user.email = email;
       user.phoneNumber = phoneNumber;
 
-      await user.save();
+      // Lưu và lấy dữ liệu mới nhất
+      const updatedUser = await user.save();
+      
+      // Làm mới dữ liệu từ database
+      const refreshedUser = await User.findById(updatedUser._id);
 
       res.status(201).json({
         success: true,
         message: "Cập nhật thông tin thành công",
-        user,
+        user: refreshedUser,
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));

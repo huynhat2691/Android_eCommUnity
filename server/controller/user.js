@@ -239,20 +239,23 @@ router.put(
         return next(new ErrorHandler("Email hoặc mật khẩu không hợp lệ", 401));
       }
 
-      user.name = name;
-      user.email = email;
-      user.phoneNumber = phoneNumber;
-
-      // Lưu và lấy dữ liệu mới nhất
-      const updatedUser = await user.save();
-      
-      // Làm mới dữ liệu từ database
-      const refreshedUser = await User.findById(updatedUser._id);
+      // Sử dụng findOneAndUpdate để cập nhật
+      const updatedUser = await User.findOneAndUpdate(
+        { email },
+        {
+          $set: {
+            name,
+            email,
+            phoneNumber,
+          }
+        },
+        { new: true } // Trả về document sau khi update
+      );
 
       res.status(201).json({
         success: true,
         message: "Cập nhật thông tin thành công",
-        user: refreshedUser,
+        user: updatedUser,
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));

@@ -146,7 +146,7 @@ function App() {
     // Show splash screen
     SplashScreen.show({
       showDuration: 2000,
-      autoHide: true
+      autoHide: true,
     });
 
     // Hide splash screen when app is ready
@@ -190,6 +190,7 @@ function App() {
   const isLoginShop = location.pathname === "/shop-login";
   const isRegisterUser = location.pathname === "/register";
   const isRegisterShop = location.pathname === "/shop-create";
+  const isProfilePage = location.pathname.startsWith("/profile");
 
   useBackButton();
 
@@ -585,7 +586,8 @@ function App() {
         !isRegisterUser &&
         !isRegisterShop &&
         !isCartPage &&
-        !isCheckoutPage && <ChatPopup />}
+        !isCheckoutPage &&
+        !isProfilePage && <ChatPopup />}
     </div>
   );
 }

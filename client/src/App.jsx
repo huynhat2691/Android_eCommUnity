@@ -583,7 +583,9 @@ function App() {
         !isLoginUser &&
         !isLoginShop &&
         !isRegisterUser &&
-        !isRegisterShop && <ChatPopup />}
+        !isRegisterShop &&
+        !isCartPage &&
+        !isCheckoutPage && <ChatPopup />}
     </div>
   );
 }

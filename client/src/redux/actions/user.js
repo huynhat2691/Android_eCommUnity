@@ -169,26 +169,29 @@ export const deleteUserAddress = (id) => async (dispatch) => {
       type: "deleteUserAddressRequest",
     });
 
+    const config = {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
     const { data } = await axios.delete(
       `${server}/user/delete-user-address/${id}`,
-      {
-        withCredentials: true,
-        headers: {
-          "Access-Control-Allow-Credentials": true,
-        },
-      }
+      config
     );
 
     dispatch({
       type: "deleteUserAddressSuccess",
       payload: {
+        successMessage: data.message,
         user: data.user,
       },
     });
   } catch (error) {
     dispatch({
       type: "deleteUserAddressFail",
-      payload: error.response.data.message,
+      payload: error.response?.data?.message || "Có lỗi xảy ra",
     });
   }
 };

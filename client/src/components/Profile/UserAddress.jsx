@@ -127,8 +127,20 @@ const UserAddress = () => {
     setEditingAddress(null);
   };
 
-  const handleDeleteAddress = (item) => {
-    dispatch(deleteUserAddress(item._id));
+  const handleDeleteAddress = async (item) => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa địa chỉ này?")) {
+      try {
+        dispatch(deleteUserAddress(item._id))
+          .then(() => {
+            toast.success("Xóa địa chỉ thành công");
+          })
+          .catch((error) => {
+            toast.error(error.message || "Không thể xóa địa chỉ");
+          });
+      } catch (error) {
+        toast.error("Không thể xóa địa chỉ");
+      }
+    }
   };
 
   const handleUpdateAddress = (address) => {

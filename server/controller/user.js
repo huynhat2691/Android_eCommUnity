@@ -341,25 +341,27 @@ router.delete(
       const userId = req.user._id;
       const addressId = req.params.id;
 
-      await User.updateOne(
+      const user = await User.findById(userId);
+      if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+      }
+
+      // Update user document
+      await User.findByIdAndUpdate(
+        userId,
         {
-          _id: userId,
+          $pull: { addresses: { _id: addressId } },
         },
-        {
-          $pull: {
-            addresses: {
-              _id: addressId,
-            },
-          },
-        }
+        { new: true }
       );
 
-      const user = await User.findById(userId);
+      // Fetch updated user
+      const updatedUser = await User.findById(userId);
 
       res.status(200).json({
         success: true,
         message: "Địa chỉ đã được xóa thành công",
-        user,
+        user: updatedUser,
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
